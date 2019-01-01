@@ -9,8 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel-Socket') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('public/js/app.js') }}" defer></script>
+    
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,10 +17,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ asset('public/css/style.css') }}" rel="stylesheet">
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -37,7 +35,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item">
+                            <a href="{{ route('posts.index') }}" class="nav-link">Posts</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -76,11 +76,27 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="container">
+            <div id="alert">
+                <div class="alert alert-{{ session('class')?? '' }}">
+                    {{ session('message')?? '' }}
+                </div>
+            </div>
             @yield('content')
         </main>
     </div>
 
+
+    <!-- Scripts -->
+    <script src="{{ asset('public/js/app.js') }}" defer></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous">       
+    </script>
+    <script type="text/javascript">
+        $("#alert .alert").fadeOut(5000);
+    </script>
     @yield('script')
 </body>
 </html>
