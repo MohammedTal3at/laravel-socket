@@ -46359,7 +46359,8 @@ module.exports = function(module) {
       }
     };
 
-
+    _proto.hide = function hide(withoutTimeout) {
+      var _this2 = this;
 
       if (!this._element.classList.contains(ClassName$a.SHOW)) {
         return;
@@ -46910,7 +46911,6 @@ module.exports = function parseHeaders(headers) {
 };
 
 
-
 /***/ }),
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -46993,7 +46993,7 @@ module.exports = (
 "use strict";
 
 
-
+// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
 
 var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
@@ -47241,7 +47241,6 @@ module.exports = function dispatchRequest(config) {
 };
 
 
-
 /***/ }),
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -47409,7 +47408,9 @@ module.exports = function spread(callback) {
 };
 
 
-
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
             (typeof self !== "undefined" && self) ||
@@ -48270,7 +48271,10 @@ var NullChannel = function (_Channel) {
      * Unsubscribe from a channel.
      */
 
-
+  }, {
+    key: 'unsubscribe',
+    value: function unsubscribe() {}
+    //
 
     /**
      * Listen for an event on the channel instance.
@@ -48446,7 +48450,17 @@ var PusherConnector = function (_Connector) {
          * Get a presence channel instance by name.
          */
 
-
+    }, {
+        key: 'presenceChannel',
+        value: function presenceChannel(name) {
+            if (!this.channels['presence-' + name]) {
+                this.channels['presence-' + name] = new PusherPresenceChannel(this.pusher, 'presence-' + name, this.options);
+            }
+            return this.channels['presence-' + name];
+        }
+        /**
+         * Leave the given channel, as well as its private and presence variants.
+         */
 
     }, {
         key: 'leave',
@@ -51524,8 +51538,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
 
-
+	"use strict";
+	var factory_1 = __webpack_require__(43);
+	var TransportManager = (function () {
+	    function TransportManager(options) {
+	        this.options = options || {};
+	        this.livesLeft = this.options.lives || Infinity;
+	    }
+	    TransportManager.prototype.getAssistant = function (transport) {
+	        return factory_1["default"].createAssistantToTheTransportManager(this, transport, {
+	            minPingDelay: this.options.minPingDelay,
+	            maxPingDelay: this.options.maxPingDelay
+	        });
+	    };
+	    TransportManager.prototype.isAlive = function () {
+	        return this.livesLeft > 0;
+	    };
+	    TransportManager.prototype.reportDeath = function () {
+	        this.livesLeft -= 1;
+	    };
+	    return TransportManager;
+	}());
+	exports.__esModule = true;
+	exports["default"] = TransportManager;
 
 
 /***/ }),
@@ -52407,7 +52446,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      x8 = j8, x9 = j9, x10 = j10, x11 = j11, x12 = j12, x13 = j13, x14 = j14,
 	      x15 = j15, u;
 
-
+	  for (var i = 0; i < 20; i += 2) {
+	    u = x0 + x12 | 0;
+	    x4 ^= u<<7 | u>>>(32-7);
+	    u = x4 + x0 | 0;
+	    x8 ^= u<<9 | u>>>(32-9);
+	    u = x8 + x4 | 0;
+	    x12 ^= u<<13 | u>>>(32-13);
+	    u = x12 + x8 | 0;
+	    x0 ^= u<<18 | u>>>(32-18);
 
 	    u = x5 + x1 | 0;
 	    x9 ^= u<<7 | u>>>(32-7);
