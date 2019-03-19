@@ -17,8 +17,8 @@ class CommentController extends Controller
     {
       try {
         $comment = \App\Comment::create([
-          'body'    => $reqest->only('body'),
-          'user_id' => \Auth::id,
+          'body'    => $request->body,
+          'user_id' => \Auth::id(),
           'post_id' => $post_id
         ]);
         $comment = \App\Comment::whereId($comment->id)->with('user')->first();
