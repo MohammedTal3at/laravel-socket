@@ -11,9 +11,12 @@
     <hr />
 
     <h3>Comments:</h3>
-    <div style="margin-bottom:50px;">
+    <div style="margin-bottom:50px;" v-if="user">
       <textarea class="form-control" rows="3" name="body" placeholder="Leave a comment" v-model="commentBox"></textarea>
       <button @click.prevent="addComment" :disabled="!commentBox" class="btn btn-success" style="margin-top:10px" >Save Comment</button>
+    </div>
+    <div v-else class="alert alert-warning">
+      You must be logged in to leave a comment, <a href="{{ route('login') }}">login now?</a>
     </div>
     <div class="media" style="margin-top:20px;" v-for="comment in comments">
       <div class="media-left">
