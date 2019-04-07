@@ -25,7 +25,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -97,6 +97,7 @@
     <script type="text/javascript">
         $("#alert .alert").fadeOut(5000);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     @yield('script')
 </body>
 </html>

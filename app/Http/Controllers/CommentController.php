@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Events\NewComment;
 
 class CommentController extends Controller
 {
@@ -22,6 +23,8 @@ class CommentController extends Controller
           'post_id' => $post_id
         ]);
         $comment = \App\Comment::whereId($comment->id)->with('user')->first();
+        //trigger an event
+        event(new NewComment($comment));
         return response()->json(['data'=>$comment, 'status'=>'success'],200);
       } catch (\Exception $e) {
         return response()->json(['data'=>$e->getMessage(), 'status'=>'error'],500);

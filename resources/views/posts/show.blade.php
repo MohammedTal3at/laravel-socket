@@ -34,6 +34,7 @@
     </div>
   </div>
 
+
 @endsection
 @section('script')
   {{-- expr --}}
@@ -50,6 +51,7 @@
       },
       mounted(){
         this.getComments();  //load comments for this post
+        this.listen(); //start listening for new comment for this post !
       },
       methods : {
         getComments : function(){
@@ -63,10 +65,28 @@
         addComment : function(){
            axios.post(`${api_url}posts/${this.post.id}/comment` , {body:this.commentBox , api_token:this.user.api_token}).then((res)=>{
             this.comments.unshift(res.data.data);
-            this.commentBox = ''; 
+            this.commentBox = '';
+
+
           }).catch(err=>{
             console.log(err);
           })
+        },
+        listen: function(){
+          //by default the event name is the class name of event class
+          Echo.channel(`post.${this.post.id}`).listen('NewComment',(newComment)=>{
+            if(newComment.user.id != this.user.id){
+              Swal.fire({
+                 toast: true,
+                 position: 'top-end',
+                 showConfirmButton: false,
+                 timer: 5000,
+                 html:`<strong style="color:#fff">"${newComment.user.name}" added new comment </strong>`,
+                 background : '#28a745CC',
+              });
+              this.comments.unshift(newComment);
+            }
+          });
         }
       }
     });
