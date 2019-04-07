@@ -75,7 +75,6 @@
         listen: function(){
           //by default the event name is the class name of event class
           Echo.channel(`post.${this.post.id}`).listen('NewComment',(newComment)=>{
-            if(newComment.user.id != this.user.id){
               Swal.fire({
                  toast: true,
                  position: 'top-end',
@@ -85,7 +84,6 @@
                  background : '#28a745CC',
               });
               this.comments.unshift(newComment);
-            }
           });
         }
       }

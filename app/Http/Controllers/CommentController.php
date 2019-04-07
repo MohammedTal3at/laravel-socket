@@ -24,7 +24,8 @@ class CommentController extends Controller
         ]);
         $comment = \App\Comment::whereId($comment->id)->with('user')->first();
         //trigger an event
-        event(new NewComment($comment));
+        broadcast(new NewComment($comment))->toOthers(); //all except this user
+        //event(new NewComment($comment));
         return response()->json(['data'=>$comment, 'status'=>'success'],200);
       } catch (\Exception $e) {
         return response()->json(['data'=>$e->getMessage(), 'status'=>'error'],500);
